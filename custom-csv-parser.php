@@ -169,7 +169,7 @@ class Custom_CSV_Parser {
     }
 
     function import_products() {
-        $uploads = wp_upload_dir();
+        //$uploads = wp_upload_dir();
         foreach ($this->products as $header => $value) {
 
                 $post_data['post_type'] = "product";
@@ -194,8 +194,9 @@ class Custom_CSV_Parser {
                 }
                 wp_set_object_terms($post_id, 'simple', 'product_type', false);
                 foreach ($this->func_fields as $wp_key => $miva_key) {
+                    //if not on importing on same domain replace site_url() with the domain your images live on from the export file
                     if ($miva_key == "image_url")
-                        $value[$miva_key] = trailingslashit($uploads['url']) . basename($value[$miva_key]);
+                        $value[$miva_key] = trailingslashit(site_url()) . basename($value[$miva_key]);
                     $this->{$wp_key}($post_id, $value[$miva_key]);
                 }
                 $row++;
